@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="VoxGuard FAST" />
+  <title>VoxGuard FAST Demo</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="stylesheet" href="./styles.css?v=20260722-2" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">PRIVACY-PRESERVING PROTOTYPE</p>
+        <h1>VoxGuard FAST Demo</h1>
+        <p class="subhead">On-device face, arm-pose and speech-activity screening.</p>
+      </div>
+      <div id="systemBadge" class="badge badge-loading">Loading models…</div>
+    </header>
+
+    <section class="notice" role="note">
+      <strong>Research demo only.</strong> This tool does not diagnose or rule out stroke. If FAST symptoms appear suddenly, contact emergency services immediately.
+    </section>
+
+    <section class="controls card">
+      <button id="startButton" class="button button-primary" disabled>Start camera & microphone</button>
+      <button id="baselineButton" class="button" disabled>Record normal baseline</button>
+      <button id="checkButton" class="button button-accent" disabled>Run guided FAST check</button>
+      <button id="stopButton" class="button button-quiet" disabled>Stop sensors</button>
+      <label class="privacy-toggle">
+        <input id="privacyToggle" type="checkbox" />
+        <span>Privacy view: hide raw video</span>
+      </label>
+    </section>
+
+    <section class="stage-grid">
+      <div class="camera-card card">
+        <div class="camera-header">
+          <div>
+            <p class="eyebrow">LIVE LOCAL ANALYSIS</p>
+            <h2 id="phaseTitle">Start sensors to begin</h2>
+          </div>
+          <div id="countdown" class="countdown">—</div>
+        </div>
+        <p id="phaseInstruction" class="instruction">Camera and microphone data remain in this browser session.</p>
+
+        <div id="cameraFrame" class="camera-frame">
+          <video id="camera" autoplay muted playsinline></video>
+          <canvas id="overlay"></canvas>
+          <div id="cameraPlaceholder" class="camera-placeholder">
+            <span>Camera preview</span>
+          </div>
+        </div>
+
+        <div class="live-strip">
+          <span><i id="faceDot" class="status-dot"></i>Face</span>
+          <span><i id="poseDot" class="status-dot"></i>Pose</span>
+          <span><i id="speechDot" class="status-dot"></i>Voice</span>
+          <span id="fpsLabel">0 fps</span>
+        </div>
+      </div>
+
+      <aside class="metrics-stack">
+        <article id="faceCard" class="metric-card card">
+          <div class="metric-heading">
+            <span class="metric-icon">F</span>
+            <div><h3>Face</h3><p>Mouth-corner symmetry</p></div>
+          </div>
+          <div id="faceValue" class="metric-value">—</div>
+          <div id="faceStatus" class="metric-status">Not assessed</div>
+        </article>
+
+        <article id="armsCard" class="metric-card card">
+          <div class="metric-heading">
+            <span class="metric-icon">A</span>
+            <div><h3>Arms</h3><p>Level difference and drift</p></div>
+          </div>
+          <div id="armsValue" class="metric-value">—</div>
+          <div id="armsStatus" class="metric-status">Not assessed</div>
+        </article>
+
+        <article id="speechCard" class="metric-card card">
+          <div class="metric-heading">
+            <span class="metric-icon">S</span>
+            <div><h3>Speech</h3><p>Voice activity and timing</p></div>
+          </div>
+          <div id="speechValue" class="metric-value">—</div>
+          <div id="speechStatus" class="metric-status">Not assessed</div>
+          <div class="audio-meter"><span id="audioMeter"></span></div>
+        </article>
+      </aside>
+    </section>
+
+    <section id="resultCard" class="result-card card result-neutral">
+      <div>
+        <p class="eyebrow">GUIDED CHECK RESULT</p>
+        <h2 id="resultTitle">No check completed</h2>
+        <p id="resultText">Record an optional normal baseline, then run the guided FAST check.</p>
+      </div>
+      <div id="baselineState" class="baseline-state">Baseline: not recorded</div>
+    </section>
+
+    <section class="details card">
+      <details>
+        <summary>What this demo measures</summary>
+        <ul>
+          <li><strong>Face:</strong> tilt-normalised vertical difference between the two mouth corners.</li>
+          <li><strong>Arms:</strong> wrist level difference and downward movement relative to shoulder width.</li>
+          <li><strong>Speech:</strong> microphone energy, voiced duration and pauses. It does not yet detect slurring or aphasia.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Privacy and limitations</summary>
+        <ul>
+          <li>Inference runs in the browser. This demo contains no upload endpoint or analytics.</li>
+          <li>The browser still captures raw frames and audio in device memory before extracting landmarks and audio energy.</li>
+          <li>Thresholds are heuristic and have not been clinically validated.</li>
+          <li>A real medical model requires consented, clinically labelled acute-stroke and stroke-mimic data.</li>
+        </ul>
+      </details>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js?v=20260722-2"></script>
+</body>
+</html>

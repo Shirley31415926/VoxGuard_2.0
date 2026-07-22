@@ -1,0 +1,9 @@
+{
+  "name": "VoxGuard FAST Demo",
+  "short_name": "VoxGuard",
+  "description": "On-device face, arm pose and speech activity FAST demonstration.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07101d",
+  "theme_color": "#0b1220"
+}
